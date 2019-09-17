@@ -67,14 +67,14 @@ module Paperclip
       begin
         parameters = []
         parameters << source_file_options
-        parameters << ":source"
+        parameters << "#{File.expand_path(src.path)}"
         parameters << transformation_command
         parameters << convert_options
-        parameters << ":dest"
+        parameters << "#{File.expand_path(dst.path)}"
 
         parameters = parameters.flatten.compact.join(" ").strip.squeeze(" ")
 
-        success = convert(parameters, :source => "#{File.expand_path(src.path)}#{'[0]' unless animated?}", :dest => File.expand_path(dst.path))
+        success = convert(parameters)
       rescue Cocaine::ExitStatusError => e
         raise Paperclip::Error, "There was an error processing the thumbnail for #{@basename}" if @whiny
       rescue Cocaine::CommandNotFoundError => e
